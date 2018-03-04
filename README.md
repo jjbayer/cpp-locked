@@ -12,6 +12,8 @@ locked(x)->doSomething();
 ``locked`` returns a scoped lock which is associated with the object's memory address. Because temporary objects live until [its containing full-expression has been evaluated](http://en.cppreference.com/w/cpp/language/lifetime), exclusive access is guaranteed until the call to ``doSomething()`` has returned.
 
 ## Example
+
+```cpp
 void writeChars(std::ostream & out, char start, char end)
 {
     for(char c = start; c <= end; c++) out << c;
