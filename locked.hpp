@@ -31,6 +31,7 @@ class LockedObject
         }
 
     public:
+        T & operator*() { return *_object; }
         T * operator->() { return _object; }
 
     private:
