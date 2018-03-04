@@ -1,47 +1,6 @@
 #pragma once
 
-#include <unordered_map>
-#include <mutex>
-
-/// Thread-safe mutex manager
-class MutexMap
-{
-public:
-
-    /// Create mutex if necessary, increase reference counter
-    std::mutex & getMutex(void * address)
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-
-        auto & entry = _map[address]; // Creates entry if does not exist
-        entry.counter++;
-
-        return entry.mutex;
-    }
-
-    /// Decrease reference counter, delete mutex if necessary
-    void leaveMutex(void * address)
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-
-        const auto it = _map.find(address);
-        auto & entry = it->second; // must exist
-        if( --entry.counter == 0) {
-            _map.erase(it);
-        }
-    }
-
-private:
-
-    struct CountingMutex
-    {
-        std::mutex mutex;
-        int counter = 0;
-    };
-
-    std::mutex _mutex;
-    std::unordered_map<void *, CountingMutex> _map;
-};
+#include "mutexmap.hpp"
 
 
 template<typename T>
